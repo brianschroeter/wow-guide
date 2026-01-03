@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lee's WoW Adventure Guide - Ultimate Edition</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --alliance-blue: #0d1b2a;
+            --alliance-blue-light: #1b263b;
+            --alliance-blue-mid: #415a77;
+            --alliance-gold: #ffd700;
+            --alliance-gold-dim: #b8860b;
+            --alliance-silver: #c0c0c0;
+            --text-primary: #e0e1dd;
+            --text-secondary: #778da9;
+            --success-green: #2ecc71;
+            --druid-orange: #ff7d0a;
+            --druid-bg: #1a1207;
+            --warrior-brown: #c79c6e;
+            --paladin-pink: #f58cba;
+            --hunter-green: #abd473;
+            --rogue-yellow: #fff569;
+            --priest-white: #ffffff;
+            --shaman-blue: #0070de;
+            --mage-lightblue: #69ccf0;
+            --warlock-purple: #9482c9;
+            --monk-jade: #00ff96;
+            --dk-red: #c41f3b;
+            --dh-purple: #a330c9;
+            --evoker-teal: #33937f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--alliance-blue);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(65, 90, 119, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(27, 38, 59, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(13, 27, 42, 1) 0%, rgba(13, 27, 42, 1) 100%);
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--alliance-gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-up 8s infinite;
+        }
+
+        @keyframes float-up {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-100vh) scale(1); }
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--alliance-blue-mid);
+            border: 2px solid var(--alliance-blue-mid);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot:hover,
+        .nav-dot.active {
+            background: var(--alliance-gold);
+            border-color: var(--alliance-gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .nav-dot .tooltip {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--alliance-blue-light);
+            color: var(--text-primary);
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            border: 1px solid var(--alliance-blue-mid);
+        }
+
+        .nav-dot:hover .tooltip {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container { display: none; }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* Alliance Lion SVG */
+        .alliance-crest {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+            animation: pulse-glow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+        }
+
+        .alliance-crest img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.7)); }
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--alliance-gold) 0%, #fff 50%, var(--alliance-gold) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .edition-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--alliance-gold) 0%, var(--alliance-gold-dim) 100%);
+            color: var(--alliance-blue);
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Sound Toggle */
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 300;
+            background: var(--alliance-blue-light);
+            border: 1px solid var(--alliance-blue-mid);
+            color: var(--text-primary);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle:hover {
+            border-color: var(--alliance-gold);
+            background: var(--alliance-blue-mid);
+        }
+
+        .sound-toggle.muted {
+            opacity: 0.5;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: sticky;
+            top: 0;
+            background: rgba(13, 27, 42, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            z-index: 100;
+            border-bottom: 1px solid var(--alliance-blue-mid);
+        }
+
+        .progress-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: var(--alliance-gold);
+            letter-spacing: 2px;
+        }
+
+        .progress-count {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--alliance-blue-light);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--alliance-gold-dim), var(--alliance-gold));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease-out;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+        }
+
+        /* Quest Cards (Sections) */
+        .quest-card {
+            background: linear-gradient(135deg, var(--alliance-blue-light) 0%, rgba(27, 38, 59, 0.8) 100%);
+            border: 1px solid var(--alliance-blue-mid);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .quest-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quest-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--alliance-gold), transparent);
+        }
+
+        .quest-card:hover {
+            border-color: var(--alliance-gold-dim);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Collapsible Header */
+        .quest-header {
+            padding: 35px 35px 0;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .quest-header-left {
+            flex: 1;
+        }
+
+        .quest-toggle {
+            font-size: 1.5rem;
+            color: var(--alliance-gold);
+            transition: transform 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .quest-card.collapsed .quest-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .quest-content {
+            padding: 0 35px 35px;
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .quest-card.collapsed .quest-content {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+
+        .quest-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--alliance-gold) 0%, var(--alliance-gold-dim) 100%);
+            color: var(--alliance-blue);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 6px 16px;
+            border-radius: 20px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success-green);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--alliance-gold);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin: 25px 0 15px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        /* CurseForge Card */
+        .featured-card {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(255, 107, 0, 0.05) 100%);
+            border: 2px solid #ff6b00;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .featured-card h4 {
+            font-family: 'Cinzel', serif;
+            color: #ff6b00;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .featured-card p {
+            margin-bottom: 20px;
+        }
+
+        .featured-card .badge {
+            display: inline-block;
+            background: #ff6b00;
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Links & Buttons */
+        a {
+            color: var(--alliance-gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        a:hover {
+            color: #fff;
+            border-bottom-color: var(--alliance-gold);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--alliance-gold-dim) 0%, var(--alliance-gold) 100%);
+            color: var(--alliance-blue);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+            border-bottom: none;
+            color: var(--alliance-blue);
+        }
+
+        .btn-secondary {
+            background: var(--alliance-blue-mid);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--alliance-gold);
+            color: var(--alliance-blue);
+        }
+
+        .btn-discord {
+            background: #5865f2 !important;
+            color: #ffffff !important;
+        }
+
+        .btn-discord:hover {
+            background: #4752c4 !important;
+            color: #ffffff !important;
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1rem;
+        }
+
+        /* Checkboxes */
+        .checklist {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            background: rgba(13, 27, 42, 0.4);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist li:hover {
+            background: rgba(13, 27, 42, 0.7);
+        }
+
+        .checklist li.completed {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 3px solid var(--success-green);
+        }
+
+        .checklist li.completed span {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--alliance-blue-mid);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .checklist li.completed .checkbox {
+            background: var(--success-green);
+            border-color: var(--success-green);
+            animation: checkPop 0.3s ease;
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .checkbox::after {
+            content: "✓";
+            color: white;
+            font-weight: bold;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .checklist li.completed .checkbox::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Addon Table */
+        .addon-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .addon-table th,
+        .addon-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--alliance-blue-mid);
+        }
+
+        .addon-table th {
+            font-family: 'Cinzel', serif;
+            color: var(--alliance-gold);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .addon-table tr:hover td {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .priority-must {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .priority-rec {
+            color: var(--alliance-gold);
+            font-weight: 500;
+        }
+
+        /* Credentials Box */
+        .credentials-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--alliance-gold-dim);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .credentials-box h4 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .credential-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .credential-item label {
+            color: var(--text-secondary);
+            min-width: 100px;
+        }
+
+        .credential-item code {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: var(--alliance-gold);
+            flex: 1;
+            min-width: 150px;
+            border: 1px solid var(--alliance-blue-mid);
+        }
+
+        .copy-btn {
+            background: var(--alliance-blue-mid);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--alliance-gold);
+            color: var(--alliance-blue);
+        }
+
+        .copy-btn.copied {
+            background: var(--success-green);
+        }
+
+        .copy-all-btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--alliance-gold-dim) 0%, var(--alliance-gold) 100%);
+            color: var(--alliance-blue);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.8) 0%, rgba(30, 30, 50, 0.8) 100%);
+            border-color: #6441a5;
+        }
+
+        .quiz-section::before {
+            background: linear-gradient(90deg, transparent, #6441a5, transparent);
+        }
+
+        .quiz-section h2 {
+            color: #b19cd9;
+        }
+
+        .quiz-section .quest-number {
+            background: linear-gradient(135deg, #6441a5 0%, #4a3080 100%);
+        }
+
+        .quiz-container {
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .quiz-question.active {
+            display: block;
+        }
+
+        .quiz-progress {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quiz-question h3 {
+            color: #b19cd9;
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(100, 65, 165, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            color: var(--text-primary);
+        }
+
+        .quiz-option:hover {
+            border-color: #6441a5;
+            background: rgba(100, 65, 165, 0.15);
+            transform: translateX(5px);
+        }
+
+        .quiz-option .option-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .quiz-option .option-text {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .quiz-option .option-text strong {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .quiz-option .option-text small {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .quiz-results {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .quiz-results.active {
+            display: block;
+        }
+
+        .quiz-results h3 {
+            color: #b19cd9;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .result-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .result-card:hover {
+            transform: translateX(5px);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .result-card.gold {
+            border-left-color: #ffd700;
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        .result-card .result-rank {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            min-width: 40px;
+        }
+
+        .result-card.gold .result-rank {
+            color: #ffd700;
+        }
+
+        .result-card .result-icon {
+            font-size: 2.5rem;
+        }
+
+        .result-card .result-info {
+            flex: 1;
+        }
+
+        .result-card .result-info h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .result-card .result-info p {
+            font-size: 0.85rem;
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .result-card .result-score {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* Quick Tips Box */
+        .quick-tips-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .quick-tips-box.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .quick-tips-box h4 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 12px;
+        }
+
+        .quick-tips-box ul {
+            margin-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        .quick-tips-box li {
+            margin-bottom: 6px;
+        }
+
+        /* Class Deep Dive Section - Dynamic Styling */
+        .class-deep-dive {
+            transition: all 0.3s ease;
+        }
+
+        .class-deep-dive .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .class-deep-dive .spec-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .class-deep-dive .spec-card:hover {
+            transform: scale(1.03);
+        }
+
+        .class-deep-dive .spec-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .class-deep-dive .spec-card h4 {
+            font-family: 'Cinzel', serif;
+            margin-bottom: 5px;
+        }
+
+        .class-deep-dive .spec-card .role {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .class-deep-dive .spec-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .class-deep-dive .perks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .class-deep-dive .perk {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .class-deep-dive .perk .emoji {
+            font-size: 1.5rem;
+        }
+
+        .class-deep-dive .perk h5 {
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .class-deep-dive .perk p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .class-deep-dive .pro-tip {
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 3px solid;
+        }
+
+        .class-deep-dive .pro-tip strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .class-deep-dive .pro-tip p {
+            margin: 0;
+        }
+
+        /* Recommended Badge on Class Buttons */
+        .class-btn.recommended {
+            position: relative;
+        }
+
+        .class-btn.recommended::after {
+            content: "★";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ffd700;
+            color: #000;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .class-btn {
+            padding: 15px 10px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .class-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .class-btn.active {
+            border-color: currentColor;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .class-btn .class-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .class-btn .class-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .class-tips {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .class-tips.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .class-tips h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .class-tips ul {
+            margin-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        .class-tips li {
+            margin-bottom: 8px;
+        }
+
+        /* Druid Section Special */
+        .druid-section {
+            background: linear-gradient(135deg, var(--druid-bg) 0%, rgba(26, 18, 7, 0.8) 100%);
+            border-color: var(--druid-orange);
+        }
+
+        .druid-section::before {
+            background: linear-gradient(90deg, transparent, var(--druid-orange), transparent);
+        }
+
+        .druid-section h2 {
+            color: var(--druid-orange);
+        }
+
+        .druid-section .quest-number {
+            background: linear-gradient(135deg, var(--druid-orange) 0%, #cc6400 100%);
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .spec-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 125, 10, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .spec-card:hover {
+            border-color: var(--druid-orange);
+            transform: scale(1.03);
+        }
+
+        .spec-card .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .spec-card h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--druid-orange);
+            margin-bottom: 5px;
+        }
+
+        .spec-card .role {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .spec-card p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .druid-perks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .perk {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .perk .emoji {
+            font-size: 1.5rem;
+        }
+
+        .perk h5 {
+            color: var(--druid-orange);
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .perk p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        /* Quick Reference */
+        .reference-table {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .reference-table tr {
+            display: flex;
+            border-bottom: 1px solid var(--alliance-blue-mid);
+        }
+
+        .reference-table td {
+            padding: 15px;
+        }
+
+        .reference-table td:first-child {
+            color: var(--alliance-gold);
+            font-weight: 500;
+            min-width: 140px;
+        }
+
+        .reference-table td:last-child {
+            flex: 1;
+            font-family: monospace;
+            color: var(--text-primary);
+        }
+
+        /* Final Checklist */
+        .final-checklist {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+
+        .final-checklist::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
+        }
+
+        .final-checklist h2 {
+            color: var(--success-green);
+        }
+
+        .final-checklist .quest-number {
+            background: linear-gradient(135deg, var(--success-green) 0%, #27ae60 100%);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer .emoji {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Celebration Modal */
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(13, 27, 42, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .celebration.active {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .celebration h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--alliance-gold);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .celebration p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .celebration .close-btn {
+            margin-top: 30px;
+            background: var(--alliance-gold);
+            color: var(--alliance-blue);
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .celebration .close-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .bg-animation,
+            .particles,
+            .nav-container,
+            .sound-toggle,
+            .progress-container,
+            #confetti-canvas,
+            .celebration,
+            .quest-toggle {
+                display: none !important;
+            }
+
+            .quest-card {
+                background: white;
+                border: 2px solid #333;
+                opacity: 1;
+                transform: none;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .quest-card::before {
+                background: #333;
+            }
+
+            .quest-card.collapsed .quest-content {
+                max-height: none;
+                opacity: 1;
+                padding: 0 35px 35px;
+            }
+
+            h1, h2, h3, h4 {
+                color: #333 !important;
+                -webkit-text-fill-color: #333 !important;
+            }
+
+            p, .text-secondary {
+                color: #666 !important;
+            }
+
+            .checklist li {
+                background: #f5f5f5;
+                border: 1px solid #ddd;
+            }
+
+            .btn {
+                background: #333;
+                color: white;
+            }
+
+            .credentials-box {
+                background: #f5f5f5;
+                border: 2px solid #333;
+            }
+
+            .credential-item code {
+                background: white;
+                border: 1px solid #333;
+                color: #333;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .quest-header,
+            .quest-content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .addon-table {
+                font-size: 0.85rem;
+            }
+
+            .addon-table th,
+            .addon-table td {
+                padding: 10px 8px;
+            }
+
+            .credential-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .credential-item code {
+                width: 100%;
+            }
+
+            .sound-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 1rem;
+            }
+
+            .class-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Password Overlay */
+        .password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--alliance-blue);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .password-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .password-box {
+            background: linear-gradient(135deg, var(--alliance-blue-light) 0%, var(--alliance-blue) 100%);
+            border: 2px solid var(--alliance-gold);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.1);
+            animation: password-appear 0.6s ease;
+        }
+
+        @keyframes password-appear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .password-box .lock-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .password-box h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--alliance-gold);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .password-box p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid var(--alliance-blue-mid);
+            border-radius: 10px;
+            background: var(--alliance-blue);
+            color: var(--text-primary);
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--alliance-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .password-input.error {
+            border-color: #e74c3c;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .password-submit {
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, var(--alliance-gold) 0%, var(--alliance-gold-dim) 100%);
+            color: var(--alliance-blue);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .password-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .password-error-msg {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .password-error-msg.visible {
+            opacity: 1;
+        }
+
+        .password-hint {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection Overlay -->
+    <div class="password-overlay" id="password-overlay">
+        <div class="password-box">
+            <span class="lock-icon">🔐</span>
+            <h2>Enter Password</h2>
+            <p>This guide is for Lee's eyes only!</p>
+            <form id="password-form" onsubmit="return checkPassword(event)">
+                <div class="password-input-wrapper">
+                    <input type="password" class="password-input" id="password-input" placeholder="Enter password..." autocomplete="off" autofocus>
+                </div>
+                <button type="submit" class="password-submit">Unlock Guide</button>
+            </form>
+            <div class="password-error-msg" id="password-error">Incorrect password. Try again!</div>
+            <p class="password-hint">Hint: It's Lee's guide!</p>
+        </div>
+    </div>
+
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Sound Toggle -->
+    <button class="sound-toggle" id="sound-toggle" title="Toggle Sound Effects">🔊</button>
+
+    <!-- Side Navigation -->
+    <nav class="nav-container" id="nav-dots">
+        <div class="nav-dot" data-section="section-1"><span class="tooltip">Addon Manager</span></div>
+        <div class="nav-dot" data-section="section-2"><span class="tooltip">Addons</span></div>
+        <div class="nav-dot" data-section="section-3"><span class="tooltip">Zygor</span></div>
+        <div class="nav-dot" data-section="section-4"><span class="tooltip">Discord</span></div>
+        <div class="nav-dot" data-section="section-5"><span class="tooltip">In-Game</span></div>
+        <div class="nav-dot" data-section="section-6"><span class="tooltip">Class Quiz</span></div>
+        <div class="nav-dot" data-section="section-7"><span class="tooltip">Class Deep Dive</span></div>
+        <div class="nav-dot" data-section="section-8"><span class="tooltip">Reference</span></div>
+        <div class="nav-dot" data-section="section-9"><span class="tooltip">Final Check</span></div>
+    </nav>
+
+    <header>
+        <div class="logo-container">
+            <!-- Official Alliance Emblem -->
+            <div class="alliance-crest">
+                <img src="alliance-logo.png" alt="Alliance Emblem" />
+            </div>
+            <h1>Lee's WoW Adventure</h1>
+            <p class="subtitle">Welcome Back to Azeroth</p>
+            <span class="edition-badge">✨ ULTIMATE EDITION ✨</span>
+        </div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-inner">
+            <div class="progress-header">
+                <span class="progress-title">Quest Progress</span>
+                <span class="progress-count"><span id="completed-count">0</span> / <span id="total-count">0</span> Objectives</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- Section 1: Addon Manager -->
+        <section class="quest-card" id="section-1" data-section="1">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">CHAPTER I</span>
+                    <span class="time-badge">~5 min</span>
+                    <h2><span class="icon">📦</span> Addon Manager Setup</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>Addons are managed outside the game via a dedicated app. This is your addon HQ.</p>
+
+                <div class="featured-card">
+                    <span class="badge">RECOMMENDED</span>
+                    <h4>⚡ CurseForge</h4>
+                    <p>The gold standard for WoW addons. Huge library, automatic updates, easy one-click installs. This is what most players use.</p>
+                    <a href="https://www.curseforge.com/download/app" target="_blank" class="btn btn-large">⬇️ Download CurseForge</a>
+                </div>
+
+                <h3>Quick Setup</h3>
+                <ol style="margin-left: 20px; color: var(--text-secondary);">
+                    <li>Download and install CurseForge</li>
+                    <li>Launch it and sign in (or create account)</li>
+                    <li>Click "World of Warcraft" - it auto-detects your install</li>
+                    <li>You're ready to install addons!</li>
+                </ol>
+
+                <ul class="checklist">
+                    <li data-id="curseforge-installed"><div class="checkbox"></div><span>CurseForge downloaded and installed</span></li>
+                    <li data-id="wow-detected"><div class="checkbox"></div><span>WoW installation detected</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 2: Essential Addons -->
+        <section class="quest-card" id="section-2" data-section="2">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">CHAPTER II</span>
+                    <span class="time-badge">~5 min</span>
+                    <h2><span class="icon">⚔️</span> Essential Addons</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>Search for these in CurseForge and click "Install":</p>
+
+                <table class="addon-table">
+                    <thead>
+                        <tr>
+                            <th>Addon</th>
+                            <th>What It Does</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>GTFO</strong></td>
+                            <td>Loud alert when standing in bad stuff. Dungeon lifesaver.</td>
+                            <td class="priority-must">🔴 Must Have</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deadly Boss Mods</strong></td>
+                            <td>Boss timers, warnings, and strategy alerts.</td>
+                            <td class="priority-must">🔴 Must Have</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Details!</strong></td>
+                            <td>Damage/healing meters. Track your performance.</td>
+                            <td class="priority-rec">🟡 Recommended</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bagnon</strong></td>
+                            <td>All bags merged into one window. Huge QoL.</td>
+                            <td class="priority-rec">🟡 Recommended</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <ul class="checklist">
+                    <li data-id="gtfo"><div class="checkbox"></div><span>GTFO installed</span></li>
+                    <li data-id="dbm"><div class="checkbox"></div><span>Deadly Boss Mods (DBM) installed</span></li>
+                    <li data-id="details"><div class="checkbox"></div><span>Details! installed</span></li>
+                    <li data-id="bagnon"><div class="checkbox"></div><span>Bagnon installed</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 3: Zygor -->
+        <section class="quest-card" id="section-3" data-section="3">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">CHAPTER III</span>
+                    <span class="time-badge">~10 min</span>
+                    <h2><span class="icon">🗺️</span> Zygor Guides</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>Zygor is a <strong>premium leveling guide</strong> that shows you exactly where to go and what to do. Brian's sharing his account with you!</p>
+
+                <div style="background: rgba(255, 215, 0, 0.1); border-left: 3px solid var(--alliance-gold); padding: 15px; border-radius: 0 8px 8px 0; margin: 15px 0;">
+                    <strong style="color: var(--alliance-gold);">⚠️ Important:</strong> Zygor installs separately - NOT through CurseForge!
+                </div>
+
+                <h3>Installation</h3>
+                <a href="https://zygorguides.com/client/releases/zygor_setup_win" target="_blank" class="btn btn-large" style="margin-bottom: 20px;">⬇️ Download Zygor Installer</a>
+
+                <div class="credentials-box">
+                    <h4>🔐 Login Credentials</h4>
+                    <div class="credential-item">
+                        <label>Username:</label>
+                        <code id="zygor-user">Bahawolf88</code>
+                        <button class="copy-btn" onclick="copyToClipboard('zygor-user', this)">Copy</button>
+                    </div>
+                    <div class="credential-item">
+                        <label>Password:</label>
+                        <code id="zygor-pass">5NeB5tVH^2PCsJU$795v</code>
+                        <button class="copy-btn" onclick="copyToClipboard('zygor-pass', this)">Copy</button>
+                    </div>
+                    <button class="copy-all-btn" onclick="copyAllCredentials('zygor')">📋 Copy Both to Clipboard</button>
+                </div>
+
+                <h3>Using Zygor In-Game</h3>
+                <ul style="margin-left: 20px; color: var(--text-secondary);">
+                    <li><strong>Arrow</strong> - Points you where to go</li>
+                    <li><strong>Guide Panel</strong> - Shows current objectives</li>
+                    <li><strong>Click steps</strong> - To track on your map</li>
+                    <li><strong>Auto-advances</strong> - As you complete things</li>
+                </ul>
+
+                <ul class="checklist">
+                    <li data-id="zygor-download"><div class="checkbox"></div><span>Zygor installer downloaded</span></li>
+                    <li data-id="zygor-install"><div class="checkbox"></div><span>Zygor installed and logged in</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 4: Discord -->
+        <section class="quest-card" id="section-4" data-section="4">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">CHAPTER IV</span>
+                    <span class="time-badge">~5 min</span>
+                    <h2><span class="icon">🎙️</span> Discord Setup</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>Discord is how we'll voice chat while playing. It's free and way better than in-game voice.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
+                    <div style="background: rgba(88, 101, 242, 0.1); border: 1px solid #5865f2; border-radius: 10px; padding: 20px; text-align: center;">
+                        <h4 style="color: #5865f2; font-family: 'Cinzel', serif; margin-bottom: 10px;">Step 1: Get Discord</h4>
+                        <p style="font-size: 0.9rem;">Desktop app = best voice quality</p>
+                        <a href="https://discord.com/download" target="_blank" class="btn btn-discord" style="margin-top: 15px;">Download Discord</a>
+                    </div>
+                    <div style="background: rgba(88, 101, 242, 0.1); border: 1px solid #5865f2; border-radius: 10px; padding: 20px; text-align: center;">
+                        <h4 style="color: #5865f2; font-family: 'Cinzel', serif; margin-bottom: 10px;">Step 2: Join Server</h4>
+                        <p style="font-size: 0.9rem;">Our gaming hangout awaits!</p>
+                        <a href="https://discord.gg/ebxTsMda" target="_blank" class="btn btn-discord" style="margin-top: 15px;">🎮 Join Server</a>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 10px; padding: 20px; margin: 20px 0;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 10px;">About the Server</h4>
+                    <p style="margin: 0;">It's a chill mix of <strong>real-life friends</strong> and <strong>online gaming buddies</strong> we've met over the years. We hang out here for various games. Jump in voice chat anytime - people pop in and out. Good vibes only. 🎮</p>
+                </div>
+
+                <ul class="checklist">
+                    <li data-id="discord-install"><div class="checkbox"></div><span>Discord downloaded and installed</span></li>
+                    <li data-id="discord-join"><div class="checkbox"></div><span>Joined the gaming server</span></li>
+                    <li data-id="discord-mic"><div class="checkbox"></div><span>Mic tested (Settings → Voice & Video)</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 5: First Steps -->
+        <section class="quest-card" id="section-5" data-section="5">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">CHAPTER V</span>
+                    <span class="time-badge">~3 min</span>
+                    <h2><span class="icon">🏰</span> First Steps In-Game</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <h3>Server & Faction</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0;">
+                    <div style="background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 5px;">🖥️</div>
+                        <div style="color: var(--text-secondary); font-size: 0.8rem;">SERVER</div>
+                        <div style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--alliance-gold);">Stormrage</div>
+                    </div>
+                    <div style="background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 5px;">🦁</div>
+                        <div style="color: var(--text-secondary); font-size: 0.8rem;">FACTION</div>
+                        <div style="font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--alliance-gold);">Alliance</div>
+                    </div>
+                </div>
+
+                <h3>Add Brian as a Friend</h3>
+                <div class="credentials-box" style="margin-top: 15px;">
+                    <h4>👤 Battle.net ID</h4>
+                    <div class="credential-item">
+                        <label>BattleTag:</label>
+                        <code id="bnet-id">Bahawolf#1364</code>
+                        <button class="copy-btn" onclick="copyToClipboard('bnet-id', this)">Copy</button>
+                    </div>
+                </div>
+                <p style="margin-top: 15px;"><strong>How:</strong> Press <kbd style="background: var(--alliance-blue-mid); padding: 3px 8px; border-radius: 4px;">O</kbd> → Add Friend → Paste the BattleTag</p>
+
+                <h3>Enable Your Addons</h3>
+                <p>At the character select screen, click <strong>"AddOns"</strong> (bottom left). Make sure everything shows <span style="color: var(--success-green);">Enabled</span>. If any show red, check "Load out of date AddOns."</p>
+
+                <ul class="checklist">
+                    <li data-id="char-created"><div class="checkbox"></div><span>Character created on Stormrage (Alliance)</span></li>
+                    <li data-id="friend-added"><div class="checkbox"></div><span>Added Bahawolf#1364 as friend</span></li>
+                    <li data-id="addons-enabled"><div class="checkbox"></div><span>Addons enabled at character select</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 6: Class Quiz (NEW!) -->
+        <section class="quest-card quiz-section" id="section-6" data-section="6">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">BONUS</span>
+                    <span class="time-badge">~2 min</span>
+                    <h2><span class="icon">🎯</span> Find Your Perfect Class</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>Not sure which class to pick? Take this quick quiz to find your ideal match, or skip ahead and browse all classes below!</p>
+
+                <div class="quiz-container" id="quiz-container">
+                    <!-- Quiz Questions -->
+                    <div class="quiz-question active" data-question="1">
+                        <div class="quiz-progress">Question 1 of 5</div>
+                        <h3>What role sounds most appealing?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-value="tank">
+                                <span class="option-icon">🛡️</span>
+                                <span class="option-text">
+                                    <strong>Tank</strong>
+                                    <small>Lead the group, take the hits, control the fight</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="healer">
+                                <span class="option-icon">💚</span>
+                                <span class="option-text">
+                                    <strong>Healer</strong>
+                                    <small>Keep everyone alive, support the team</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="dps">
+                                <span class="option-icon">⚔️</span>
+                                <span class="option-text">
+                                    <strong>Damage Dealer</strong>
+                                    <small>Crush enemies, top the meters</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="flex">
+                                <span class="option-icon">🔄</span>
+                                <span class="option-text">
+                                    <strong>Flexible / All of the Above</strong>
+                                    <small>I want to do different things depending on mood</small>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question" data-question="2">
+                        <div class="quiz-progress">Question 2 of 5</div>
+                        <h3>Combat range preference?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-value="melee">
+                                <span class="option-icon">🗡️</span>
+                                <span class="option-text">
+                                    <strong>Melee</strong>
+                                    <small>In the thick of battle, up close and personal</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="ranged">
+                                <span class="option-icon">🎯</span>
+                                <span class="option-text">
+                                    <strong>Ranged</strong>
+                                    <small>Keep your distance, cast from afar</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="both">
+                                <span class="option-icon">↔️</span>
+                                <span class="option-text">
+                                    <strong>Both / No Preference</strong>
+                                    <small>I'm open to either playstyle</small>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question" data-question="3">
+                        <div class="quiz-progress">Question 3 of 5</div>
+                        <h3>How complex do you want your rotation?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-value="simple">
+                                <span class="option-icon">😌</span>
+                                <span class="option-text">
+                                    <strong>Keep it Simple</strong>
+                                    <small>Easy to learn, forgiving mistakes, relaxed gameplay</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="moderate">
+                                <span class="option-icon">🤔</span>
+                                <span class="option-text">
+                                    <strong>Moderate Complexity</strong>
+                                    <small>Some decision-making, satisfying but not overwhelming</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="complex">
+                                <span class="option-icon">🧠</span>
+                                <span class="option-text">
+                                    <strong>Challenge Me</strong>
+                                    <small>Complex rotations, resource management, high skill ceiling</small>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question" data-question="4">
+                        <div class="quiz-progress">Question 4 of 5</div>
+                        <h3>Do you want a pet or companion?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-value="yes-pet">
+                                <span class="option-icon">🐾</span>
+                                <span class="option-text">
+                                    <strong>Yes! Give me a buddy</strong>
+                                    <small>I want a pet to fight alongside me</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="no-pet">
+                                <span class="option-icon">🚶</span>
+                                <span class="option-text">
+                                    <strong>No, solo warrior</strong>
+                                    <small>I prefer to rely on my own abilities</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="either-pet">
+                                <span class="option-icon">🤷</span>
+                                <span class="option-text">
+                                    <strong>Don't Care Either Way</strong>
+                                    <small>Pet or no pet, I'm flexible</small>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question" data-question="5">
+                        <div class="quiz-progress">Question 5 of 5</div>
+                        <h3>What fantasy theme speaks to you?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" data-value="nature">
+                                <span class="option-icon">🌿</span>
+                                <span class="option-text">
+                                    <strong>Nature & Animals</strong>
+                                    <small>Shapeshifting, beasts, the wild</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="holy">
+                                <span class="option-icon">✨</span>
+                                <span class="option-text">
+                                    <strong>Holy & Light</strong>
+                                    <small>Divine power, righteous justice, protection</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="dark">
+                                <span class="option-icon">💀</span>
+                                <span class="option-text">
+                                    <strong>Dark & Edgy</strong>
+                                    <small>Death, demons, shadows, forbidden magic</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="arcane">
+                                <span class="option-icon">🔮</span>
+                                <span class="option-text">
+                                    <strong>Arcane & Elements</strong>
+                                    <small>Fire, frost, lightning, raw magical power</small>
+                                </span>
+                            </button>
+                            <button class="quiz-option" data-value="martial">
+                                <span class="option-icon">⚔️</span>
+                                <span class="option-text">
+                                    <strong>Martial & Physical</strong>
+                                    <small>Steel, strength, combat mastery, no magic needed</small>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Results -->
+                    <div class="quiz-results" id="quiz-results">
+                        <h3>🎯 Your Top Class Recommendations</h3>
+                        <div class="results-grid" id="results-grid">
+                            <!-- Filled dynamically -->
+                        </div>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Retake Quiz</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 25px 0 15px;">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">─── or browse all classes ───</span>
+                </div>
+
+                <div class="class-grid" id="class-grid">
+                    <button class="class-btn" data-class="warrior" style="color: var(--warrior-brown);">
+                        <div class="class-icon">⚔️</div>
+                        <div class="class-name">Warrior</div>
+                    </button>
+                    <button class="class-btn" data-class="paladin" style="color: var(--paladin-pink);">
+                        <div class="class-icon">🛡️</div>
+                        <div class="class-name">Paladin</div>
+                    </button>
+                    <button class="class-btn" data-class="hunter" style="color: var(--hunter-green);">
+                        <div class="class-icon">🏹</div>
+                        <div class="class-name">Hunter</div>
+                    </button>
+                    <button class="class-btn" data-class="rogue" style="color: var(--rogue-yellow);">
+                        <div class="class-icon">🗡️</div>
+                        <div class="class-name">Rogue</div>
+                    </button>
+                    <button class="class-btn" data-class="priest" style="color: var(--priest-white);">
+                        <div class="class-icon">✨</div>
+                        <div class="class-name">Priest</div>
+                    </button>
+                    <button class="class-btn" data-class="shaman" style="color: var(--shaman-blue);">
+                        <div class="class-icon">⚡</div>
+                        <div class="class-name">Shaman</div>
+                    </button>
+                    <button class="class-btn" data-class="mage" style="color: var(--mage-lightblue);">
+                        <div class="class-icon">❄️</div>
+                        <div class="class-name">Mage</div>
+                    </button>
+                    <button class="class-btn" data-class="warlock" style="color: var(--warlock-purple);">
+                        <div class="class-icon">🔥</div>
+                        <div class="class-name">Warlock</div>
+                    </button>
+                    <button class="class-btn active" data-class="druid" style="color: var(--druid-orange);">
+                        <div class="class-icon">🐻</div>
+                        <div class="class-name">Druid</div>
+                    </button>
+                    <button class="class-btn" data-class="monk" style="color: var(--monk-jade);">
+                        <div class="class-icon">🥋</div>
+                        <div class="class-name">Monk</div>
+                    </button>
+                    <button class="class-btn" data-class="dk" style="color: var(--dk-red);">
+                        <div class="class-icon">💀</div>
+                        <div class="class-name">Death Knight</div>
+                    </button>
+                    <button class="class-btn" data-class="dh" style="color: var(--dh-purple);">
+                        <div class="class-icon">😈</div>
+                        <div class="class-name">Demon Hunter</div>
+                    </button>
+                    <button class="class-btn" data-class="evoker" style="color: var(--evoker-teal);">
+                        <div class="class-icon">🐉</div>
+                        <div class="class-name">Evoker</div>
+                    </button>
+                </div>
+
+                <!-- Quick Tips (shown when class is selected but deep dive not expanded) -->
+                <div class="quick-tips-box" id="quick-tips-box">
+                    <div id="quick-tips-content"></div>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+                        👇 <em>See full class deep dive below!</em>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Dynamic Class Deep Dive -->
+        <section class="quest-card class-deep-dive" id="section-7" data-section="7">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number" id="deep-dive-badge">CLASS DEEP DIVE</span>
+                    <h2 id="deep-dive-title"><span class="icon">🐻</span> Druid Mastery Guide</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content" id="deep-dive-content">
+                <!-- Content dynamically generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Section 8: Quick Reference -->
+        <section class="quest-card" id="section-8" data-section="8">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">REFERENCE</span>
+                    <h2><span class="icon">📋</span> Quick Reference</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>All the important info in one place:</p>
+
+                <table class="reference-table">
+                    <tr>
+                        <td>Server</td>
+                        <td>Stormrage</td>
+                    </tr>
+                    <tr>
+                        <td>Faction</td>
+                        <td>Alliance</td>
+                    </tr>
+                    <tr>
+                        <td>Brian's BNet</td>
+                        <td>Bahawolf#1364</td>
+                    </tr>
+                    <tr>
+                        <td>Discord</td>
+                        <td><a href="https://discord.gg/ebxTsMda">discord.gg/ebxTsMda</a></td>
+                    </tr>
+                    <tr>
+                        <td>Zygor User</td>
+                        <td>Bahawolf88</td>
+                    </tr>
+                    <tr>
+                        <td>Zygor Pass</td>
+                        <td>5NeB5tVH^2PCsJU$795v</td>
+                    </tr>
+                </table>
+
+                <div class="credentials-box" style="margin-top: 20px;">
+                    <h4>📋 Copy Everything</h4>
+                    <button class="copy-all-btn" onclick="copyAllInfo()">Copy All Info to Clipboard</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Final Checklist -->
+        <section class="quest-card final-checklist" id="section-9" data-section="9">
+            <div class="quest-header">
+                <div class="quest-header-left">
+                    <span class="quest-number">FINAL QUEST</span>
+                    <h2><span class="icon">✅</span> Ready to Play?</h2>
+                </div>
+                <span class="quest-toggle">▼</span>
+            </div>
+            <div class="quest-content">
+                <p>Final check before your adventure begins:</p>
+
+                <ul class="checklist">
+                    <li data-id="final-addons"><div class="checkbox"></div><span>CurseForge + all addons installed</span></li>
+                    <li data-id="final-zygor"><div class="checkbox"></div><span>Zygor installed and logged in</span></li>
+                    <li data-id="final-discord"><div class="checkbox"></div><span>Discord installed and joined server</span></li>
+                    <li data-id="final-friend"><div class="checkbox"></div><span>Added Bahawolf#1364 as friend</span></li>
+                    <li data-id="final-ready"><div class="checkbox"></div><span>Ready to play!</span></li>
+                </ul>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-large" onclick="celebrate()" style="background: linear-gradient(135deg, var(--success-green) 0%, #27ae60 100%);">
+                        🎉 I'm Ready - Let's Go!
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="emoji">⚔️🛡️</div>
+        <p>See you in Azeroth!</p>
+        <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.6;">For the Alliance! 🦁</p>
+        <p style="margin-top: 20px; font-size: 0.7rem; opacity: 0.4;">Double-click the title to reset progress</p>
+    </footer>
+
+    <!-- Celebration Modal -->
+    <div class="celebration" id="celebration">
+        <h2>🎉 Quest Complete! 🎉</h2>
+        <p>You're all set up and ready to adventure!<br>See you in Azeroth, champion!</p>
+        <button class="close-btn" onclick="closeCelebration()">⚔️ For the Alliance! ⚔️</button>
+    </div>
+
+    <script>
+        // ==================== PASSWORD PROTECTION ====================
+        function checkPassword(event) {
+            event.preventDefault();
+            const input = document.getElementById('password-input');
+            const overlay = document.getElementById('password-overlay');
+            const errorMsg = document.getElementById('password-error');
+            const password = input.value.toUpperCase();
+
+            if (password === 'LEESGUIDE') {
+                // Success - hide overlay with animation
+                overlay.classList.add('hidden');
+                // Store in session so refresh doesn't require password again
+                sessionStorage.setItem('wowGuideAuth', 'true');
+                return false;
+            } else {
+                // Wrong password - show error and shake
+                input.classList.add('error');
+                errorMsg.classList.add('visible');
+                input.value = '';
+
+                setTimeout(() => {
+                    input.classList.remove('error');
+                }, 500);
+
+                return false;
+            }
+        }
+
+        // Check if already authenticated this session
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('wowGuideAuth') === 'true') {
+                document.getElementById('password-overlay').classList.add('hidden');
+            }
+        });
+
+        // ==================== SOUND SYSTEM ====================
+        let soundEnabled = true;
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+
+            // Resume audio context if suspended (browser autoplay policy)
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            switch(type) {
+                case 'complete':
+                    // WoW quest complete-ish sound
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialDecayToValueAtTime?.(0.01, audioContext.currentTime + 0.4) ||
+                        gainNode.gain.setValueAtTime(0.01, audioContext.currentTime + 0.4);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.4);
+                    break;
+                case 'uncomplete':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.01, audioContext.currentTime + 0.15);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.15);
+                    break;
+                case 'celebration':
+                    // Fanfare
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, i) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.15);
+                        gain.gain.setValueAtTime(0.3, audioContext.currentTime + i * 0.15);
+                        gain.gain.setValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.3);
+                        osc.start(audioContext.currentTime + i * 0.15);
+                        osc.stop(audioContext.currentTime + i * 0.15 + 0.3);
+                    });
+                    return;
+            }
+        }
+
+        // Sound toggle
+        const soundToggle = document.getElementById('sound-toggle');
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
+            soundToggle.classList.toggle('muted', !soundEnabled);
+            localStorage.setItem('wow-guide-sound', soundEnabled);
+        });
+
+        // Load sound preference
+        if (localStorage.getItem('wow-guide-sound') === 'false') {
+            soundEnabled = false;
+            soundToggle.textContent = '🔇';
+            soundToggle.classList.add('muted');
+        }
+
+        // ==================== PARTICLES ====================
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ==================== CONFETTI ====================
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiPieces = [];
+        let animationId = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function createConfetti() {
+            const colors = ['#ffd700', '#ffec8b', '#fff8dc', '#87ceeb', '#98fb98', '#dda0dd'];
+            for (let i = 0; i < 150; i++) {
+                confettiPieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 6 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * Math.PI * 2,
+                    spin: (Math.random() - 0.5) * 0.2
+                });
+            }
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            confettiPieces.forEach((p, i) => {
+                p.y += p.speed;
+                p.x += Math.sin(p.angle) * 0.5;
+                p.angle += p.spin;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                ctx.restore();
+
+                if (p.y > canvas.height) {
+                    confettiPieces.splice(i, 1);
+                }
+            });
+
+            if (confettiPieces.length > 0) {
+                animationId = requestAnimationFrame(animateConfetti);
+            }
+        }
+
+        function launchConfetti() {
+            if (animationId) cancelAnimationFrame(animationId);
+            confettiPieces = [];
+            createConfetti();
+            animateConfetti();
+        }
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.quest-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // ==================== NAVIGATION ====================
+        const navDots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('.quest-card');
+
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.dataset.section;
+                document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Update active nav dot on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.id;
+                }
+            });
+
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.dataset.section === current) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+
+        // ==================== COLLAPSIBLE SECTIONS ====================
+        document.querySelectorAll('.quest-header').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('collapsed');
+            });
+        });
+
+        // ==================== CHECKLIST ====================
+        const checklistItems = document.querySelectorAll('.checklist li');
+        const totalCount = document.getElementById('total-count');
+        const completedCount = document.getElementById('completed-count');
+        const progressFill = document.getElementById('progress-fill');
+
+        totalCount.textContent = checklistItems.length;
+
+        function loadState() {
+            const saved = localStorage.getItem('wow-guide-progress-v2');
+            if (saved) {
+                const completed = JSON.parse(saved);
+                completed.forEach(id => {
+                    const item = document.querySelector(`[data-id="${id}"]`);
+                    if (item) item.classList.add('completed');
+                });
+            }
+            updateProgress();
+        }
+
+        function saveState() {
+            const completed = [];
+            checklistItems.forEach(item => {
+                if (item.classList.contains('completed')) {
+                    completed.push(item.dataset.id);
+                }
+            });
+            localStorage.setItem('wow-guide-progress-v2', JSON.stringify(completed));
+        }
+
+        function updateProgress() {
+            const completed = document.querySelectorAll('.checklist li.completed').length;
+            completedCount.textContent = completed;
+            const percentage = (completed / checklistItems.length) * 100;
+            progressFill.style.width = percentage + '%';
+
+            if (completed === checklistItems.length && checklistItems.length > 0) {
+                setTimeout(() => {
+                    celebrate();
+                }, 500);
+            }
+        }
+
+        checklistItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const wasCompleted = item.classList.contains('completed');
+                item.classList.toggle('completed');
+
+                if (!wasCompleted) {
+                    playSound('complete');
+                } else {
+                    playSound('uncomplete');
+                }
+
+                saveState();
+                updateProgress();
+            });
+        });
+
+        loadState();
+
+        // ==================== CLASS DATA ====================
+        const classData = {
+            warrior: {
+                name: "Warrior", icon: "⚔️", color: "var(--warrior-brown)", colorHex: "#c79c6e",
+                tagline: "The quintessential melee fighter - charge in, smash faces, repeat.",
+                specs: [
+                    { emoji: "🛡️", name: "Protection", role: "Tank", desc: "Shield-wielding defender. Control the battlefield." },
+                    { emoji: "⚔️", name: "Arms", role: "Melee DPS", desc: "Methodical two-handed strikes. Mortal Strike is iconic." },
+                    { emoji: "💢", name: "Fury", role: "Melee DPS", desc: "Dual-wield berserker. Fast and furious." }
+                ],
+                perks: [
+                    { emoji: "🦘", title: "Heroic Leap", desc: "Leap to a location. Amazing mobility." },
+                    { emoji: "⚡", title: "Charge", desc: "Rush enemies from range. Great gap closer." },
+                    { emoji: "💪", title: "Plate Armor", desc: "Heaviest armor. Very durable." },
+                    { emoji: "😤", title: "Rage System", desc: "No mana to manage, just fight." }
+                ],
+                proTip: "Fury is fastest for leveling - you never stop swinging!",
+                quickTips: ["Roles: Tank (Prot) or Melee DPS (Arms/Fury)", "Playstyle: In-your-face combat", "Leveling: Very durable, pull multiple mobs", "Perk: Heroic Leap is amazing mobility"]
+            },
+            paladin: {
+                name: "Paladin", icon: "🛡️", color: "var(--paladin-pink)", colorHex: "#f58cba",
+                tagline: "Holy warrior with incredible survivability - the hybrid that can do it all.",
+                specs: [
+                    { emoji: "🛡️", name: "Protection", role: "Tank", desc: "Holy-powered tank. Nearly unkillable." },
+                    { emoji: "⚔️", name: "Retribution", role: "Melee DPS", desc: "Crusader with holy damage and big weapons." },
+                    { emoji: "✨", name: "Holy", role: "Healer", desc: "Traditional healer with strong emergency saves." }
+                ],
+                perks: [
+                    { emoji: "🔮", title: "Divine Shield", desc: "Complete immunity for 8 sec. THE panic button." },
+                    { emoji: "💚", title: "Lay on Hands", desc: "Instant full heal. Once per fight game-changer." },
+                    { emoji: "✨", title: "Self-Healing", desc: "Every spec has strong healing." },
+                    { emoji: "🐴", title: "Divine Steed", desc: "Speed boost mount ability." }
+                ],
+                proTip: "Retribution is fantastic - great damage AND self-healing!",
+                quickTips: ["Roles: Tank, Healer, or Melee DPS - true hybrid!", "Playstyle: Holy warrior with strong survivability", "Leveling: Nearly unkillable, great self-heals", "Perk: Bubble = immunity panic button"]
+            },
+            hunter: {
+                name: "Hunter", icon: "🏹", color: "var(--hunter-green)", colorHex: "#abd473",
+                tagline: "The easiest class to learn - your pet tanks while you deal damage.",
+                specs: [
+                    { emoji: "🎯", name: "Marksmanship", role: "Ranged DPS", desc: "No pet needed. Pure ranged damage." },
+                    { emoji: "🐾", name: "Beast Mastery", role: "Ranged DPS", desc: "Pet-focused. Easy and mobile." },
+                    { emoji: "🗡️", name: "Survival", role: "Melee DPS", desc: "Melee hunter with traps." }
+                ],
+                perks: [
+                    { emoji: "🐻", title: "Pet Tanks", desc: "Pet holds aggro while you shoot. Smooth leveling." },
+                    { emoji: "🦁", title: "Tame Beasts", desc: "Collect cool pets from around the world." },
+                    { emoji: "🏃", title: "Feign Death", desc: "Play dead to escape bad pulls." },
+                    { emoji: "📍", title: "Aspect of Cheetah", desc: "Run faster in the open world." }
+                ],
+                proTip: "Beast Mastery is the easiest spec in WoW. Perfect for learning!",
+                quickTips: ["Roles: Ranged or Melee DPS (with pets!)", "Playstyle: Easiest class, very forgiving", "Leveling: Pet tanks for you = super smooth", "Perk: Tame cool beasts as companions"]
+            },
+            rogue: {
+                name: "Rogue", icon: "🗡️", color: "var(--rogue-yellow)", colorHex: "#fff569",
+                tagline: "Master of stealth and burst - control when and how you fight.",
+                specs: [
+                    { emoji: "☠️", name: "Assassination", role: "Melee DPS", desc: "Poison and bleed specialist." },
+                    { emoji: "🏴‍☠️", name: "Outlaw", role: "Melee DPS", desc: "Swashbuckler pirate. Fast-paced." },
+                    { emoji: "🌑", name: "Subtlety", role: "Melee DPS", desc: "Shadow dancer. High burst from stealth." }
+                ],
+                perks: [
+                    { emoji: "👁️", title: "Permanent Stealth", desc: "Walk past anything you dont want to fight." },
+                    { emoji: "💨", title: "Sprint", desc: "Massive speed boost on demand." },
+                    { emoji: "🎭", title: "Vanish", desc: "Instantly enter stealth mid-combat." },
+                    { emoji: "🔓", title: "Lockpicking", desc: "Open locked chests and doors." }
+                ],
+                proTip: "Outlaw is great for leveling - fast, flashy, and forgiving!",
+                quickTips: ["Roles: Melee DPS only (all 3 specs)", "Playstyle: Stealth, burst damage, control", "Leveling: Skip content with stealth", "Perk: Best for avoiding unwanted fights"]
+            },
+            priest: {
+                name: "Priest", icon: "✨", color: "var(--priest-white)", colorHex: "#ffffff",
+                tagline: "The classic healer with a dark side - Shadow is powerful DPS.",
+                specs: [
+                    { emoji: "✨", name: "Holy", role: "Healer", desc: "Traditional big direct heals." },
+                    { emoji: "🔰", name: "Discipline", role: "Healer", desc: "Heal by dealing damage! Unique." },
+                    { emoji: "🌑", name: "Shadow", role: "Ranged DPS", desc: "Dark caster with DoTs and void magic." }
+                ],
+                perks: [
+                    { emoji: "🤲", title: "Leap of Faith", desc: "Pull an ally to you. Save people!" },
+                    { emoji: "👻", title: "Fade", desc: "Drop threat instantly." },
+                    { emoji: "🛡️", title: "Power Word: Shield", desc: "Absorb shield for all specs." },
+                    { emoji: "💀", title: "Shadowform", desc: "Shadow Priests dark form looks amazing." }
+                ],
+                proTip: "Level as Shadow - great damage and self-healing!",
+                quickTips: ["Roles: Healer (Holy/Disc) or Ranged DPS (Shadow)", "Playstyle: Classic caster, strong in groups", "Leveling: Shadow for solo, heal for dungeons", "Perk: Leap of Faith pulls allies to safety"]
+            },
+            shaman: {
+                name: "Shaman", icon: "⚡", color: "var(--shaman-blue)", colorHex: "#0070de",
+                tagline: "Elemental master with totems - three different playstyles.",
+                specs: [
+                    { emoji: "⚡", name: "Elemental", role: "Ranged DPS", desc: "Lightning and lava. Explosive AoE." },
+                    { emoji: "🌪️", name: "Enhancement", role: "Melee DPS", desc: "Dual-wield with lightning procs." },
+                    { emoji: "💧", name: "Restoration", role: "Healer", desc: "Chain heal specialist." }
+                ],
+                perks: [
+                    { emoji: "💀", title: "Reincarnation", desc: "Self-res once per hour. Die and come back!" },
+                    { emoji: "🐺", title: "Ghost Wolf", desc: "Instant-cast wolf for faster movement." },
+                    { emoji: "🌊", title: "Totems", desc: "Drop totems for various effects." },
+                    { emoji: "⚡", title: "Bloodlust/Heroism", desc: "Massive group haste buff." }
+                ],
+                proTip: "Enhancement is fantastic - fast combat and Ghost Wolf mobility!",
+                quickTips: ["Roles: Healer, Ranged DPS, or Melee DPS", "Playstyle: Elemental magic + totems", "Leveling: Enhancement is fast and fun", "Perk: Reincarnation - self-res hourly!"]
+            },
+            mage: {
+                name: "Mage", icon: "❄️", color: "var(--mage-lightblue)", colorHex: "#69ccf0",
+                tagline: "Glass cannon with incredible utility - portals and massive damage.",
+                specs: [
+                    { emoji: "🔥", name: "Fire", role: "Ranged DPS", desc: "Explosive crits and spreading flames." },
+                    { emoji: "❄️", name: "Frost", role: "Ranged DPS", desc: "Control and safety. Freeze enemies." },
+                    { emoji: "🔮", name: "Arcane", role: "Ranged DPS", desc: "Raw magical power with mana management." }
+                ],
+                perks: [
+                    { emoji: "🌀", title: "Portals", desc: "Teleport anywhere. Open portals for groups." },
+                    { emoji: "🍞", title: "Conjure Food", desc: "Create your own food/water free." },
+                    { emoji: "❄️", title: "Frost Nova + Blink", desc: "Freeze enemies, teleport away." },
+                    { emoji: "🛡️", title: "Ice Block", desc: "Complete immunity when needed." }
+                ],
+                proTip: "Frost is safest - enemies constantly slowed or frozen!",
+                quickTips: ["Roles: Ranged DPS only (Fire/Frost/Arcane)", "Playstyle: Glass cannon - big damage, squishy", "Leveling: Frost is safest with slows", "Perk: Portals = never walk again"]
+            },
+            warlock: {
+                name: "Warlock", icon: "🔥", color: "var(--warlock-purple)", colorHex: "#9482c9",
+                tagline: "Dark magic and demons - your minion tanks while you destroy.",
+                specs: [
+                    { emoji: "☠️", name: "Affliction", role: "Ranged DPS", desc: "DoT master. Drain life while enemies wither." },
+                    { emoji: "👿", name: "Demonology", role: "Ranged DPS", desc: "Demon army commander." },
+                    { emoji: "🔥", name: "Destruction", role: "Ranged DPS", desc: "Chaos and fire. Big Chaos Bolts." }
+                ],
+                perks: [
+                    { emoji: "👿", title: "Demon Pets", desc: "Your demon tanks like Hunter pets." },
+                    { emoji: "🚪", title: "Summoning Portal", desc: "Summon group members anywhere." },
+                    { emoji: "💀", title: "Soulstone", desc: "Battle res yourself or allies." },
+                    { emoji: "🐴", title: "Free Mounts", desc: "Class demon mounts. Save gold!" }
+                ],
+                proTip: "Demonology has great survivability with your demon army!",
+                quickTips: ["Roles: Ranged DPS only (with demons!)", "Playstyle: DoTs, demons, dark magic", "Leveling: Demon tanks for you like Hunter", "Perk: Summon friends + free mounts"]
+            },
+            druid: {
+                name: "Druid", icon: "🐻", color: "var(--druid-orange)", colorHex: "#ff7d0a",
+                tagline: "The ultimate Swiss Army Knife - the ONLY class with ALL four roles!",
+                specs: [
+                    { emoji: "🐻", name: "Guardian", role: "Tank", desc: "Big bear, big health. Soak damage." },
+                    { emoji: "🐱", name: "Feral", role: "Melee DPS", desc: "Cat with bleeds. Like a rogue with utility." },
+                    { emoji: "🦉", name: "Balance", role: "Ranged DPS", desc: "Moonkin with lasers. Boomkin AoE." },
+                    { emoji: "🌿", name: "Restoration", role: "Healer", desc: "HoT-based healing. Chill playstyle." }
+                ],
+                perks: [
+                    { emoji: "🐎", title: "Travel Form", desc: "Instant-cast mount. No cast time!" },
+                    { emoji: "🦅", title: "Flight Form", desc: "Instant flight. Herb/mine without dismounting!" },
+                    { emoji: "👁️", title: "Prowl (Stealth)", desc: "Cat form stealth. Skip mobs, escape." },
+                    { emoji: "💚", title: "Off-Healing", desc: "Every spec can heal in a pinch." }
+                ],
+                proTip: "Swap specs anytime after 10. Travel Form alone makes Druid amazing!",
+                quickTips: ["Roles: ALL FOUR - Tank, Healer, Melee, Ranged DPS", "Playstyle: Shapeshifter with form per role", "Leveling: Travel Form = instant mount", "Perk: Fill any role your group needs"]
+            },
+            monk: {
+                name: "Monk", icon: "🥋", color: "var(--monk-jade)", colorHex: "#00ff96",
+                tagline: "Martial artist with incredible mobility - kicks, brews, and chi.",
+                specs: [
+                    { emoji: "🍺", name: "Brewmaster", role: "Tank", desc: "Drunken master. Stagger damage with brews." },
+                    { emoji: "🥋", name: "Windwalker", role: "Melee DPS", desc: "Fast martial arts. Combo strikes." },
+                    { emoji: "🌸", name: "Mistweaver", role: "Healer", desc: "Heal while punching enemies!" }
+                ],
+                perks: [
+                    { emoji: "🌀", title: "Roll / Chi Torpedo", desc: "Roll forward quickly. Great mobility." },
+                    { emoji: "🐅", title: "Tigers Lust", desc: "Sprint for yourself or ally." },
+                    { emoji: "🧘", title: "Transcendence", desc: "Place spirit, teleport back to it." },
+                    { emoji: "✨", title: "Touch of Death", desc: "Execute enemies. Satisfying!" }
+                ],
+                proTip: "Windwalker has amazing flow. Combat feels like a fighting game!",
+                quickTips: ["Roles: Tank, Healer, or Melee DPS", "Playstyle: Martial arts + brews", "Leveling: Very mobile, fun combat", "Perk: Roll/torpedo for mobility"]
+            },
+            dk: {
+                name: "Death Knight", icon: "💀", color: "var(--dk-red)", colorHex: "#c41f3b",
+                tagline: "Dark knight risen from death - plate armor and rune magic.",
+                specs: [
+                    { emoji: "🩸", name: "Blood", role: "Tank", desc: "Self-healing tank. Death Strike heals you." },
+                    { emoji: "❄️", name: "Frost", role: "Melee DPS", desc: "Dual-wield frost. Obliterate hits hard." },
+                    { emoji: "☠️", name: "Unholy", role: "Melee DPS", desc: "Diseases and undead minions." }
+                ],
+                perks: [
+                    { emoji: "🖐️", title: "Death Grip", desc: "YOINK! Pull enemies to you. Iconic." },
+                    { emoji: "💀", title: "Raise Ally", desc: "Battle res a fallen party member." },
+                    { emoji: "🛡️", title: "Anti-Magic Shell", desc: "Absorb magic damage." },
+                    { emoji: "🚶", title: "On a Pale Horse", desc: "Passive mount speed increase." }
+                ],
+                proTip: "Blood is nearly unkillable - constant self-healing. Death Grip never gets old!",
+                quickTips: ["Roles: Tank or Melee DPS", "Playstyle: Dark knight with undead minions", "Leveling: Starts level 8, very tanky", "Perk: Death Grip pulls enemies to you!"]
+            },
+            dh: {
+                name: "Demon Hunter", icon: "😈", color: "var(--dh-purple)", colorHex: "#a330c9",
+                tagline: "Most mobile class - double jump, glide, and dash through combat.",
+                specs: [
+                    { emoji: "😈", name: "Havoc", role: "Melee DPS", desc: "Fast and furious. Incredible mobility." },
+                    { emoji: "🛡️", name: "Vengeance", role: "Tank", desc: "Agile tank with soul fragment healing." }
+                ],
+                perks: [
+                    { emoji: "🦅", title: "Double Jump + Glide", desc: "Jump twice, then glide anywhere!" },
+                    { emoji: "💨", title: "Fel Rush", desc: "Dash forward. Use two in a row!" },
+                    { emoji: "👁️", title: "Spectral Sight", desc: "See through walls, detect stealth." },
+                    { emoji: "😈", title: "Metamorphosis", desc: "Transform into demon for power." }
+                ],
+                proTip: "Havoc is pure adrenaline - constantly dashing and eye-beaming!",
+                quickTips: ["Roles: Tank or Melee DPS (only 2 specs)", "Playstyle: Fast, flashy, double-jump + glide", "Leveling: Starts level 8, extremely mobile", "Perk: Double jump + glide = most mobile"]
+            },
+            evoker: {
+                name: "Evoker", icon: "🐉", color: "var(--evoker-teal)", colorHex: "#33937f",
+                tagline: "Dragon-born caster with empowered abilities - you ARE a dragon!",
+                specs: [
+                    { emoji: "🔥", name: "Devastation", role: "Ranged DPS", desc: "Dragon fire and disintegrate beams." },
+                    { emoji: "💚", name: "Preservation", role: "Healer", desc: "Dragon healing with echo mechanic." },
+                    { emoji: "🔮", name: "Augmentation", role: "Support DPS", desc: "Buff allies while dealing damage." }
+                ],
+                perks: [
+                    { emoji: "🐉", title: "Dracthyr Race", desc: "Youre a dragon! Switch forms." },
+                    { emoji: "🦅", title: "Soar", desc: "Dragonriding-style flight ability." },
+                    { emoji: "✨", title: "Empowered Casts", desc: "Hold abilities to charge them up." },
+                    { emoji: "🔥", title: "Deep Breath", desc: "Fly forward breathing fire!" }
+                ],
+                proTip: "Starts at level 58 - skip early leveling! Empowered casting is unique and fun.",
+                quickTips: ["Roles: Healer, Ranged DPS, or Support", "Playstyle: Dragon magic with empowered casts", "Leveling: Starts level 58, unique mechanics", "Perk: Dracthyr only - you ARE a dragon"]
+            }
+        };
+
+        // Quiz scoring weights
+        const classScores = {
+            role: {
+                tank: { warrior: 3, paladin: 3, dk: 3, dh: 3, monk: 3, druid: 2 },
+                healer: { priest: 3, paladin: 2, shaman: 3, monk: 2, druid: 2, evoker: 3 },
+                dps: { warrior: 2, hunter: 3, rogue: 3, mage: 3, warlock: 3, dh: 2, dk: 2, monk: 2 },
+                flex: { paladin: 3, druid: 4, shaman: 3, monk: 3, priest: 2, evoker: 2 }
+            },
+            range: {
+                melee: { warrior: 3, rogue: 3, dk: 3, dh: 3, monk: 3, paladin: 2, shaman: 1, druid: 1 },
+                ranged: { mage: 3, warlock: 3, hunter: 3, priest: 2, shaman: 2, evoker: 3, druid: 1 },
+                both: { druid: 3, shaman: 2, paladin: 1, monk: 1, priest: 1, hunter: 1, evoker: 2 }
+            },
+            complexity: {
+                simple: { hunter: 4, dh: 3, paladin: 2, dk: 2, warlock: 1 },
+                moderate: { warrior: 2, shaman: 2, mage: 2, priest: 2, monk: 2, druid: 2, evoker: 2 },
+                complex: { rogue: 3, druid: 2, monk: 2, warlock: 2, mage: 2, evoker: 2 }
+            },
+            pet: {
+                'yes-pet': { hunter: 4, warlock: 4, dk: 2 },
+                'no-pet': { warrior: 2, rogue: 2, mage: 2, paladin: 2, dh: 2, monk: 2 },
+                'either-pet': { druid: 1, shaman: 1, priest: 1, evoker: 1 }
+            },
+            theme: {
+                nature: { druid: 4, shaman: 3, hunter: 3 },
+                holy: { paladin: 4, priest: 3 },
+                dark: { warlock: 4, dk: 4, rogue: 2, dh: 3, priest: 1 },
+                arcane: { mage: 4, shaman: 2, evoker: 3 },
+                martial: { warrior: 4, monk: 4, rogue: 2, dh: 2 }
+            }
+        };
+
+        let quizAnswers = {};
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+
+        // ==================== QUIZ LOGIC ====================
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const question = option.closest('.quiz-question');
+                const questionNum = parseInt(question.dataset.question);
+                const value = option.dataset.value;
+                quizAnswers[questionNum] = value;
+                playSound('complete');
+                if (questionNum < totalQuestions) {
+                    question.classList.remove('active');
+                    document.querySelector('[data-question="' + (questionNum + 1) + '"]').classList.add('active');
+                    currentQuestion = questionNum + 1;
+                } else {
+                    showQuizResults();
+                }
+            });
+        });
+
+        function calculateQuizResults() {
+            const scores = {};
+            Object.keys(classData).forEach(c => scores[c] = 0);
+            ['role', 'range', 'complexity', 'pet', 'theme'].forEach((cat, i) => {
+                const answer = quizAnswers[i + 1];
+                if (answer && classScores[cat][answer]) {
+                    Object.entries(classScores[cat][answer]).forEach(([cls, score]) => scores[cls] += score);
+                }
+            });
+            return Object.entries(scores).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([classId, score]) => ({ classId, score }));
+        }
+
+        function showQuizResults() {
+            const results = calculateQuizResults();
+            const resultsGrid = document.getElementById('results-grid');
+            while (resultsGrid.firstChild) resultsGrid.removeChild(resultsGrid.firstChild);
+
+            results.forEach((result, index) => {
+                const cls = classData[result.classId];
+                const card = document.createElement('div');
+                card.className = 'result-card' + (index === 0 ? ' gold' : '');
+                card.style.borderLeftColor = cls.colorHex;
+
+                const rank = document.createElement('div');
+                rank.className = 'result-rank';
+                rank.textContent = '#' + (index + 1);
+
+                const icon = document.createElement('div');
+                icon.className = 'result-icon';
+                icon.textContent = cls.icon;
+
+                const info = document.createElement('div');
+                info.className = 'result-info';
+                const h4 = document.createElement('h4');
+                h4.style.color = cls.color;
+                h4.textContent = cls.name;
+                const p = document.createElement('p');
+                p.textContent = cls.tagline;
+                info.appendChild(h4);
+                info.appendChild(p);
+
+                card.appendChild(rank);
+                card.appendChild(icon);
+                card.appendChild(info);
+                card.addEventListener('click', () => {
+                    selectClass(result.classId);
+                    document.getElementById('section-7').scrollIntoView({ behavior: 'smooth' });
+                });
+                resultsGrid.appendChild(card);
+            });
+
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+            document.getElementById('quiz-results').classList.add('active');
+            document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('recommended'));
+            results.slice(0, 2).forEach(result => {
+                const btn = document.querySelector('.class-btn[data-class="' + result.classId + '"]');
+                if (btn) btn.classList.add('recommended');
+            });
+            playSound('celebration');
+        }
+
+        function resetQuiz() {
+            quizAnswers = {};
+            currentQuestion = 1;
+            document.getElementById('quiz-results').classList.remove('active');
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+            document.querySelector('[data-question="1"]').classList.add('active');
+            document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('recommended'));
+        }
+
+        // ==================== CLASS PICKER ====================
+        let selectedClass = 'druid';
+
+        function selectClass(classId) {
+            selectedClass = classId;
+            const cls = classData[classId];
+            document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.class-btn[data-class="' + classId + '"]').classList.add('active');
+
+            // Update quick tips using safe DOM methods
+            const quickTipsBox = document.getElementById('quick-tips-box');
+            const quickTipsContent = document.getElementById('quick-tips-content');
+            while (quickTipsContent.firstChild) quickTipsContent.removeChild(quickTipsContent.firstChild);
+
+            const h4 = document.createElement('h4');
+            h4.style.color = cls.color;
+            h4.textContent = cls.icon + ' ' + cls.name + ' Quick Tips';
+            quickTipsContent.appendChild(h4);
+
+            const ul = document.createElement('ul');
+            cls.quickTips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                ul.appendChild(li);
+            });
+            quickTipsContent.appendChild(ul);
+            quickTipsBox.classList.add('active');
+
+            updateDeepDive(classId);
+            playSound('complete');
+        }
+
+        function updateDeepDive(classId) {
+            const cls = classData[classId];
+            const section = document.getElementById('section-7');
+            const badge = document.getElementById('deep-dive-badge');
+            const title = document.getElementById('deep-dive-title');
+            const content = document.getElementById('deep-dive-content');
+
+            section.style.background = 'linear-gradient(135deg, ' + cls.colorHex + '15 0%, ' + cls.colorHex + '08 100%)';
+            section.style.borderColor = cls.colorHex;
+            badge.textContent = cls.name.toUpperCase() + ' DEEP DIVE';
+            badge.style.background = 'linear-gradient(135deg, ' + cls.colorHex + ' 0%, ' + cls.colorHex + 'cc 100%)';
+
+            while (title.firstChild) title.removeChild(title.firstChild);
+            const titleIcon = document.createElement('span');
+            titleIcon.className = 'icon';
+            titleIcon.textContent = cls.icon;
+            title.appendChild(titleIcon);
+            title.appendChild(document.createTextNode(' ' + cls.name + ' Mastery Guide'));
+            title.style.color = cls.color;
+
+            // Clear and rebuild content safely
+            while (content.firstChild) content.removeChild(content.firstChild);
+
+            const tagline = document.createElement('p');
+            tagline.textContent = cls.tagline;
+            content.appendChild(tagline);
+
+            // Specs section
+            const specsHeader = document.createElement('h3');
+            specsHeader.style.color = cls.color;
+            specsHeader.textContent = 'The ' + (cls.specs.length === 2 ? 'Two' : cls.specs.length === 3 ? 'Three' : 'Four') + ' Specs';
+            content.appendChild(specsHeader);
+
+            const specGrid = document.createElement('div');
+            specGrid.className = 'spec-grid';
+            cls.specs.forEach(spec => {
+                const card = document.createElement('div');
+                card.className = 'spec-card';
+                card.style.borderColor = cls.colorHex + '40';
+
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji';
+                emoji.textContent = spec.emoji;
+                card.appendChild(emoji);
+
+                const name = document.createElement('h4');
+                name.style.color = cls.color;
+                name.textContent = spec.name;
+                card.appendChild(name);
+
+                const role = document.createElement('p');
+                role.className = 'role';
+                role.textContent = spec.role;
+                card.appendChild(role);
+
+                const desc = document.createElement('p');
+                desc.textContent = spec.desc;
+                card.appendChild(desc);
+
+                specGrid.appendChild(card);
+            });
+            content.appendChild(specGrid);
+
+            // Perks section
+            const perksHeader = document.createElement('h3');
+            perksHeader.style.color = cls.color;
+            perksHeader.textContent = cls.name + ' Superpowers';
+            content.appendChild(perksHeader);
+
+            const perksGrid = document.createElement('div');
+            perksGrid.className = 'perks-grid';
+            cls.perks.forEach(perk => {
+                const perkDiv = document.createElement('div');
+                perkDiv.className = 'perk';
+
+                const perkEmoji = document.createElement('span');
+                perkEmoji.className = 'emoji';
+                perkEmoji.textContent = perk.emoji;
+                perkDiv.appendChild(perkEmoji);
+
+                const perkInfo = document.createElement('div');
+                const perkTitle = document.createElement('h5');
+                perkTitle.style.color = cls.color;
+                perkTitle.textContent = perk.title;
+                perkInfo.appendChild(perkTitle);
+
+                const perkDesc = document.createElement('p');
+                perkDesc.textContent = perk.desc;
+                perkInfo.appendChild(perkDesc);
+                perkDiv.appendChild(perkInfo);
+
+                perksGrid.appendChild(perkDiv);
+            });
+            content.appendChild(perksGrid);
+
+            // Pro tip
+            const proTip = document.createElement('div');
+            proTip.className = 'pro-tip';
+            proTip.style.background = cls.colorHex + '15';
+            proTip.style.borderLeftColor = cls.colorHex;
+
+            const tipStrong = document.createElement('strong');
+            tipStrong.style.color = cls.color;
+            tipStrong.textContent = '💡 Pro Tip: Leveling Advice';
+            proTip.appendChild(tipStrong);
+
+            const tipText = document.createElement('p');
+            tipText.textContent = cls.proTip;
+            proTip.appendChild(tipText);
+            content.appendChild(proTip);
+        }
+
+        // Initialize class buttons
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.addEventListener('click', () => selectClass(btn.dataset.class));
+        });
+
+        // Initialize with Druid
+        updateDeepDive('druid');
+        document.getElementById('quick-tips-box').classList.add('active');
+        (function() {
+            const druidTips = classData.druid;
+            const qtc = document.getElementById('quick-tips-content');
+            while (qtc.firstChild) qtc.removeChild(qtc.firstChild);
+            const h4 = document.createElement('h4');
+            h4.style.color = druidTips.color;
+            h4.textContent = druidTips.icon + ' ' + druidTips.name + ' Quick Tips';
+            qtc.appendChild(h4);
+            const ul = document.createElement('ul');
+            druidTips.quickTips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                ul.appendChild(li);
+            });
+            qtc.appendChild(ul);
+        })();
+
+        // ==================== CLIPBOARD ====================
+        function copyToClipboard(elementId, button) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                playSound('complete');
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyAllCredentials(type) {
+            let text = '';
+            if (type === 'zygor') {
+                text = `Zygor Login:\nUsername: Bahawolf88\nPassword: 5NeB5tVH^2PCsJU$795v`;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                playSound('complete');
+                alert('Credentials copied to clipboard!');
+            });
+        }
+
+        function copyAllInfo() {
+            const text = `=== Lee's WoW Setup Info ===
+
+Server: Stormrage
+Faction: Alliance
+
+Brian's BattleTag: Bahawolf#1364
+Discord Server: https://discord.gg/ebxTsMda
+
+Zygor Login:
+Username: Bahawolf88
+Password: 5NeB5tVH^2PCsJU$795v
+
+Downloads:
+- CurseForge: https://www.curseforge.com/download/app
+- Zygor: https://zygorguides.com/client/releases/zygor_setup_win
+- Discord: https://discord.com/download`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                playSound('complete');
+                alert('All info copied to clipboard!');
+            });
+        }
+
+        // ==================== CELEBRATION ====================
+        function celebrate() {
+            playSound('celebration');
+            launchConfetti();
+            document.getElementById('celebration').classList.add('active');
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebration').classList.remove('active');
+        }
+
+        // ==================== RESET ====================
+        document.querySelector('h1').addEventListener('dblclick', () => {
+            if (confirm('Reset all progress?')) {
+                localStorage.removeItem('wow-guide-progress-v2');
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
